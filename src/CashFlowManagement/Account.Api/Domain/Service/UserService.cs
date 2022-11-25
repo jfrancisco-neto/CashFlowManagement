@@ -1,26 +1,38 @@
 namespace Account.Service;
 
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Account.Options;
+using Account.Domain.Exceptions;
 using Account.Model;
 using Account.Repository;
 
 public class UserService : IUserService
 {
-    private AuthenticationConfiguration _authenticationConfiguration;
+    private AuthOptions _authOptions;
     private IUserRepository _repository;
 
-    public UserService(IUserRepository repository, AuthenticationConfiguration authenticationConfiguration)
+    public UserService(IUserRepository repository, AuthOptions authOptions)
     {
         _repository = repository;
-        _authenticationConfiguration = authenticationConfiguration;
+        _authOptions = authOptions;
     }
 
     public async Task Add(User user)
     {
+        var existingUser = await _repository.GetByLogin(user.Login);
+        if (existingUser is not null)
+        {
+            throw new DomainException("Login is aready in use.");
+        }
+
         user.Salt = CreateSalt();
-        user.Password = HashStrings(user.Password, user.Salt, _authenticationConfiguration.Pepper);
+        user.Password = HashStrings(user.Password, user.Salt, _authOptions.Pepper);
+        user.Active = true;
+        user.CreatedAt = DateTime.UtcNow;
+        user.UpdatedAt = DateTime.UtcNow;
 
         await _repository.Add(user);
 
@@ -34,10 +46,11 @@ public class UserService : IUserService
 
         if (!CheckPasswordMatch(user, oldPassword))
         {
-            throw new ArgumentException("Invalid password.");
+            throw new DomainException("Invalid password.");
         }
 
         user.Password = newPassword;
+        user.UpdatedAt = DateTime.UtcNow;
 
         CreateSaltAndHash(user);
 
@@ -54,10 +67,11 @@ public class UserService : IUserService
         var user = await _repository.GetById(userId);
         if (user is null)
         {
-            throw new ArgumentException("User not found.");
+            throw new DomainException("User not found.");
         }
 
         user.Active = activeState;
+        user.UpdatedAt = DateTime.UtcNow;
 
         await _repository.Update(user);
 
@@ -71,15 +85,8 @@ public class UserService : IUserService
     {
         var user = await _repository.GetByLogin(login);
 
-        if (user is null)
-        {
-            throw new ArgumentException("User not found");
-        }
-
-        if (!CheckPasswordMatch(user, password))
-        {
-            throw new ArgumentException("Login or password are invalid.");
-        }
+        if (user is null) return null;
+        if (!CheckPasswordMatch(user, password)) return null;
 
         user.Password = null;
         user.Salt = null;
@@ -89,18 +96,18 @@ public class UserService : IUserService
 
     private bool CheckPasswordMatch(User user, string originalPassword)
     {
-        return user.Password == HashStrings(originalPassword, user.Salt, _authenticationConfiguration.Pepper);
+        return user.Password == HashStrings(originalPassword, user.Salt, _authOptions.Pepper);
     }
 
     private void CreateSaltAndHash(User user)
     {
         user.Salt = CreateSalt();
-        user.Password = HashStrings(user.Password, user.Salt, _authenticationConfiguration.Pepper);
+        user.Password = HashStrings(user.Password, user.Salt, _authOptions.Pepper);
     }
 
     private static string HashStrings(params string[] strings)
     {
-        var byteStrings = strings.Select(s => Encoding.Unicode.GetBytes(s)).ToArray();
+        var byteStrings = strings.Select(s => Encoding.Unicode.GetBytes(s)).ToList();
         var totalSize = byteStrings.Sum(c => c.Length);
         var buffer = new byte[totalSize];
         var offset = 0;
@@ -120,9 +127,23 @@ public class UserService : IUserService
 
     private static string CreateSalt()
     {
-        var uuid = Guid.NewGuid().ToString();
-        var bytes = Encoding.Unicode.GetBytes(uuid);
+        var uuid = Guid.NewGuid().ToByteArray();
 
-        return Convert.ToBase64String(bytes);
+        return Convert.ToBase64String(uuid);
+    }
+
+    public Task<User> GetUser(long id)
+    {
+        return _repository.GetById(id);
+    }
+
+    public Task<ICollection<User>> ListUsers(int offset)
+    {
+        return _repository.List(offset);
+    }
+
+    public Task<int> CountTotalUsers()
+    {
+        return _repository.Count();
     }
 }

@@ -8,4 +8,7 @@ public interface IUserService
     Task<User> Login(string login, string password);
     Task<User> ChangePassword(long userId, string oldPassword, string newPassword);
     Task<User> SetActiveState(long userId, bool state);
+    Task<User> GetUser(long id);
+    Task<ICollection<User>> ListUsers(int offset);
+    Task<int> CountTotalUsers();
 }
