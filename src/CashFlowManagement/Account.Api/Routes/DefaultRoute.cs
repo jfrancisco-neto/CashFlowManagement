@@ -25,8 +25,13 @@ public static class DefaultRoute
         IUserService userService,
         [FromRoute] string id)
     {
-        var user = await userService.GetUser(hasher.DecodeLong(id));
+        var longId = hasher.DecodeLong(id);
+        if (!longId.HasValue)
+        {
+            return Results.UnprocessableEntity(new ErrorResponse("User not found."));
+        }
 
+        var user = await userService.GetUser(longId.Value);
         if (user is null)
         {
             return Results.UnprocessableEntity(new ErrorResponse("User not found."));
@@ -53,6 +58,7 @@ public static class DefaultRoute
     public static async Task<IResult> Login(
         IIdHasher hasher,
         IUserService userService,
+        IJwtService jwtService,
         [FromBody] LoginRequest login)
     {
         var user = await userService.Login(login.Login, login.Password);
@@ -62,6 +68,13 @@ public static class DefaultRoute
             return Results.UnprocessableEntity(new ErrorResponse("Invalid login or password."));
         }
 
-        return Results.Ok(new UserResponse(user, hasher.EncodeLong(user.Id)));
+        var token = jwtService.GenerateToken(user);
+
+        return Results.Ok(new LoginResponse
+        {
+            ExpiresAt = token.ExpiresAt,
+            Token = token.Token,
+            UserId = hasher.EncodeLong(user.Id)
+        });
     }
 }
