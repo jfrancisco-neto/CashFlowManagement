@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>Transaction.Persistence</AssemblyName>
+    <RootNamespace>Transaction.Persistence</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../Shared/Shared.Persistence/Shared.Persistence.csproj" />
+    <ProjectReference Include="../../Shared/Shared.Entities/Shared.Entities.csproj" />
+    <ProjectReference Include="../Transaction.Domain/Transaction.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

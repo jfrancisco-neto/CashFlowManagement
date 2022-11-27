@@ -6,20 +6,23 @@ start_compose()
     docker compose -f $rootFolder/deployment/docker/compose/compose.yaml up
 }
 
-create_account_migration()
+# account commands
+
+create_migration()
 {
-    local projectPath=$cmfProject/Account
+    local projectPath=$cmfProject/$1
     echo "Creating migration for $projectPath"
 
-    dotnet ef migrations add $1 --project $projectPath/Account.Persistence --startup-project $projectPath/Account.Api
+    dotnet ef migrations add $2 --project $projectPath/$1.Persistence --startup-project $projectPath/$1.Api
 }
 
-remove_account_migration()
+remove_migration()
 {
-    local projectPath=$cmfProject/Account
+    local projectPath=$cmfProject/$1
     echo "Creating migration for $projectPath"
 
-    dotnet ef migrations rm $1 --project $projectPath/Account.Persistence --startup-project $projectPath/Account.Api
+    dotnet ef migrations rm $2 --project $projectPath/$1.Persistence --startup-project $projectPath/$1.Api
 }
+
 
 $@

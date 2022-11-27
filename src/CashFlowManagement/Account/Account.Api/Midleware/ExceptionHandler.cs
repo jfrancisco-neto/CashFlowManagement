@@ -1,5 +1,5 @@
-using Account.Api.Response;
 using Account.Domain.Exceptions;
+using Shared.Api.Response;
 
 namespace Account.Api.Middleware;
 
@@ -16,11 +16,13 @@ public class ExceptionHandler
         catch(Exception e)
         {
             var statusCode = (int) System.Net.HttpStatusCode.InternalServerError;
-            var errorMessage = "INTERNAL_SERVER_ERROR";
+            var errorCode = "INTERNAL_SERVER_ERROR";
+            var errorMessage = "An unexpected error ocurred.";
 
             if (e is DomainException)
             {
                 statusCode = (int) System.Net.HttpStatusCode.UnprocessableEntity;
+                errorCode = "ERROR";
                 errorMessage = e.Message;
                 logger.LogInformation(e, "Domain Exception.");
             }
@@ -30,7 +32,7 @@ public class ExceptionHandler
             }
 
             context.Response.StatusCode = statusCode;
-            await context.Response.WriteAsJsonAsync(new ErrorResponse(errorMessage));
+            await context.Response.WriteAsJsonAsync(new ErrorResponse(errorCode, errorMessage));
         }
     }
 }

@@ -1,6 +1,6 @@
 namespace Account.Migrator.Options;
 
-public class SuperUserOptions
+public class MigratorOptions
 {
     public string Login { get; set; }
     public string Name { get; set; }

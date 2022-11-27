@@ -5,11 +5,20 @@ using Microsoft.AspNetCore.Mvc;
 using Account.Api.Requests;
 using Account.Api.Response;
 using Account.Security.Model;
+using Shared.Api.Response;
 
 namespace Account.Routes;
 
-public static class DefaultRoute
+public static class DefaultRoutes
 {
+    public static void MapRoutes(this WebApplication app)
+    {
+        app.MapPost("user", DefaultRoutes.CreateUser).RequireAuthorization("CreateUserPolicy");
+        app.MapGet("user/{id}", DefaultRoutes.GetUser);
+        app.MapGet("user", DefaultRoutes.ListUsers);
+        app.MapPost("auth", DefaultRoutes.Login).AllowAnonymous();
+    }
+
     public static async Task<IResult> CreateUser(
         IIdHasher hasher,
         HttpRequest httpRequest,
@@ -31,13 +40,13 @@ public static class DefaultRoute
         var longId = hasher.DecodeLong(id);
         if (!longId.HasValue)
         {
-            return Results.UnprocessableEntity(new ErrorResponse("User not found."));
+            return Results.UnprocessableEntity(new ErrorResponse("USER_NOT_FOUND", "User not found."));
         }
 
         var user = await userService.GetUser(longId.Value);
         if (user is null)
         {
-            return Results.UnprocessableEntity(new ErrorResponse("User not found."));
+            return Results.UnprocessableEntity(new ErrorResponse("USER_NOT_FOUND", "User not found."));
         }
 
         return Results.Ok(new UserResponse(user, hasher.EncodeLong(user.Id)));
@@ -68,7 +77,7 @@ public static class DefaultRoute
 
         if (user is null)
         {
-            return Results.UnprocessableEntity(new ErrorResponse("Invalid login or password."));
+            return Results.UnprocessableEntity(new ErrorResponse("LOGIN_FAILED", "Invalid login or password."));
         }
 
         var tokenCredential = new TokenCredential

@@ -15,7 +15,7 @@ var host = Host.CreateDefaultBuilder()
         services.AddPersistence(builder.Configuration);
         services.AddDomain(builder.Configuration);
         services.AddSecurity(builder.Configuration);
-        services.MapOptions<SuperUserOptions>(builder.Configuration.GetSection("Migrator:SuperUser"));
+        services.MapOptions<MigratorOptions>(builder.Configuration.GetSection("Migrator:SuperUser"));
     })
     .Build();
 
@@ -24,7 +24,7 @@ var dbcontext = scope.ServiceProvider.GetRequiredService<PersistenceContext>();
 dbcontext.Database.Migrate();
 
 var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
-var superUserOptions = scope.ServiceProvider.GetRequiredService<SuperUserOptions>();
+var superUserOptions = scope.ServiceProvider.GetRequiredService<MigratorOptions>();
 
 try
 {

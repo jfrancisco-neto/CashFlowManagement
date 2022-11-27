@@ -23,6 +23,7 @@
     <ProjectReference Include="..\Account.Domain\Account.Domain.csproj" />
     <ProjectReference Include="..\Account.Security\Account.Security.csproj" />
     <ProjectReference Include="..\Account.Persistence\Account.Persistence.csproj" />
+    <ProjectReference Include="..\..\Shared\Shared.Api\Shared.Api.csproj" />
   </ItemGroup>
 
 </Project>
