@@ -53,6 +53,12 @@ namespace Account.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_User_Login",
+                table: "User",
+                column: "Login",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserClaim_UserId",
                 table: "UserClaim",
                 column: "UserId");

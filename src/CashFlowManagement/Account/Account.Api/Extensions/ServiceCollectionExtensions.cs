@@ -13,10 +13,14 @@ public static class ServiceCollectionExtensions
         ConfigurationManager configuration)
     {
         services.AddAuthorization(options =>
-            options.FallbackPolicy = new AuthorizationPolicyBuilder()
-            .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-            .RequireAuthenticatedUser()
-            .Build());
+        {
+            options.AddPolicy("CreateUserPolicy", policy => policy.RequireClaim("Permission", "CreateUser"));
+
+            options.DefaultPolicy = new AuthorizationPolicyBuilder()
+                .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                .RequireAuthenticatedUser()
+                .Build();
+        });
 
         services
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

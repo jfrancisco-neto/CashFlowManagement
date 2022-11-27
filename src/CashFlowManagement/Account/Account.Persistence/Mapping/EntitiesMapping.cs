@@ -13,8 +13,10 @@ internal static class EntitiesMapping
         builder.Property(p => p.Login).HasMaxLength(100).IsRequired();
         builder.Property(p => p.Password).HasMaxLength(100).IsRequired();
         builder.Property(p => p.Salt).HasMaxLength(100).IsRequired();
-        builder.Property(p => p.CreatedAt).ValueGeneratedOnAdd();
-        builder.Property(p => p.UpdatedAt).ValueGeneratedOnAddOrUpdate();
+        builder.Property(p => p.CreatedAt).ValueGeneratedOnAdd().HasValueGenerator<DateTimeValueGenerator>();
+        builder.Property(p => p.UpdatedAt).ValueGeneratedOnAdd().HasValueGenerator<DateTimeValueGenerator>();
+
+        builder.HasIndex(p => p.Login).IsUnique();
     }
 
     public static void Map(this EntityTypeBuilder<UserClaim> builder)
@@ -22,7 +24,7 @@ internal static class EntitiesMapping
         builder.ToTable("UserClaim");
         builder.Property(p => p.Type).HasMaxLength(100).IsRequired();
         builder.Property(p => p.Value).HasMaxLength(100).IsRequired();
-        builder.Property(p => p.CreatedAt).ValueGeneratedOnAdd();
+        builder.Property(p => p.CreatedAt).ValueGeneratedOnAdd().HasValueGenerator<DateTimeValueGenerator>();
         builder.HasOne(p => p.User)
             .WithMany(p =>p.Claims)
             .HasForeignKey(p => p.UserId)

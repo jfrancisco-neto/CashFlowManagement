@@ -1,25 +1,43 @@
 ###
-# login user
+# @name loginAdmin
 post http://localhost:5000/auth
 Content-Type: application/json
 
 {
     "login": "admin",
-    "password": "1234"
+    "password": "admin1234"
 }
 
 ###
+# login user1
+post http://localhost:5000/auth
+Content-Type: application/json
+
+{
+    "login": "user2",
+    "password": "1234"
+}
+
+
+###
 # get user
-get http://localhost:5000/user/iel
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IkFkbWluIiwiSWQiOiIxIiwiZXhwIjoxNjY5NTYxNDk0LCJpc3MiOiIxOTEzZTgzYy0wZTFiLTQ5OGUtOGYyNC00Y2NjMGQ1MzFiYTMiLCJhdWQiOiIzMDVmZTNhOC03YjZmLTRhYjAtODgwMS05OGEwM2Y3MjNjMjIifQ.DRPx3K-kqVQlK1l3Xky4XL5O9rZYOUtsIvZxpIBeyDw
+get http://localhost:5000/user/iz5
+Authorization: Bearer {{loginAdmin.response.body.$.token}}
 
 ###
 # create user
 post http://localhost:5000/user
 Content-Type: application/json
+Authorization: Bearer {{loginAdmin.response.body.$.token}}
 
 {
-    "name": "Admin",
-    "login": "admin",
-    "password": "1234"
+    "name": "User1",
+    "login": "user1",
+    "password": "1234",
+    "claims": [
+        {
+            "type": "Permission",
+            "value": "Nothing"
+        }
+    ]
 }

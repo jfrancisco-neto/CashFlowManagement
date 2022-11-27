@@ -15,7 +15,7 @@ var app = builder.Build();
 
 app.Use(ExceptionHandler.Handle);
 
-app.MapPost("user", DefaultRoute.CreateUser).AllowAnonymous();
+app.MapPost("user", DefaultRoute.CreateUser).RequireAuthorization("CreateUserPolicy");
 app.MapGet("user/{id}", DefaultRoute.GetUser);
 app.MapGet("user", DefaultRoute.ListUsers);
 app.MapPost("auth", DefaultRoute.Login).AllowAnonymous();
@@ -26,7 +26,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();

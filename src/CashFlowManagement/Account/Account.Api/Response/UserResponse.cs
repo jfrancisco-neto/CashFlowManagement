@@ -12,6 +12,7 @@ public class UserResponse
         CreatedAt = user.CreatedAt;
         UpdatedAt = user.UpdatedAt;
         Active = user.Active;
+        Claims = user.Claims.Select(c => new UserClaimResponse(c)).ToList();
     }
 
     public string Id { get; set; }
@@ -20,4 +21,5 @@ public class UserResponse
     public bool Active { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+    public ICollection<UserClaimResponse> Claims { get; set; }
 }

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Account.Persistence.Migrations
 {
     [DbContext(typeof(PersistenceContext))]
-    [Migration("20221127213045_Initial")]
+    [Migration("20221127230907_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -61,10 +61,13 @@ namespace Account.Persistence.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Login")
+                        .IsUnique();
 
                     b.ToTable("User", (string)null);
                 });

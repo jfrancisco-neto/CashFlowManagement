@@ -28,12 +28,16 @@ public class UserRepository : IUserRepository
 
     public async Task<User> GetById(long id)
     {
-        return await _context.Users.FirstOrDefaultAsync(user => user.Id == id);
+        return await _context.Users
+            .Include(i => i.Claims)
+            .FirstOrDefaultAsync(user => user.Id == id);
     }
 
     public async Task<User> GetByLogin(string login)
     {
-        return await _context.Users.FirstOrDefaultAsync(user => user.Login == login);
+        return await _context.Users
+            .Include(i => i.Claims)
+            .FirstOrDefaultAsync(user => user.Login == login);
     }
 
     public async Task<ICollection<User>> List(int offset)
@@ -43,6 +47,8 @@ public class UserRepository : IUserRepository
 
     public async Task Update(User user)
     {
+        user.UpdatedAt = DateTime.UtcNow;
+
         _context.Users.Update(user);
 
         await _context.SaveChangesAsync();

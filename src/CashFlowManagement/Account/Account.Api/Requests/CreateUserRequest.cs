@@ -7,6 +7,7 @@ public class CreateUserRequest
     public string Name { get; set; }
     public string Login { get; set; }
     public string Password { get; set; }
+    public ICollection<CreateUserClaimRequest> Claims { get; set; }
 
     public User ToDomainUser()
     {
@@ -14,7 +15,8 @@ public class CreateUserRequest
         {
             Name = Name,
             Login = Login,
-            Password = Password
+            Password = Password,
+            Claims = Claims?.Select(c => c.ToDomainClaim()).ToList()
         };
     }
 }
