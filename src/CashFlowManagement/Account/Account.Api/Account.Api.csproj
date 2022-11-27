@@ -22,6 +22,7 @@
     <ProjectReference Include="..\Account.IOC\Account.IOC.csproj" />
     <ProjectReference Include="..\Account.Domain\Account.Domain.csproj" />
     <ProjectReference Include="..\Account.Security\Account.Security.csproj" />
+    <ProjectReference Include="..\Account.Persistence\Account.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

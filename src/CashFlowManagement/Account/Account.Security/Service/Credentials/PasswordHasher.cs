@@ -11,6 +11,12 @@ internal class PasswordHasher
     {
         var builder = new StringBuilder();
 
+        while (builder.Length < length)
+        {
+            var randomIdex = Random.Shared.Next(0, Alphabet.Length);
+            builder.Append(Alphabet[randomIdex]);
+        }
+
         return builder.ToString();
     }
 

@@ -10,9 +10,11 @@ internal static class EntitiesMapping
     {
         builder.ToTable("User");
         builder.Property(p => p.Name).HasMaxLength(2048).IsRequired();
-        builder.Property(p => p.Login).HasMaxLength(2048).IsRequired();
-        builder.Property(p => p.Password).HasMaxLength(2048).IsRequired();
-        builder.Property(p => p.Salt).HasMaxLength(2048).IsRequired();
+        builder.Property(p => p.Login).HasMaxLength(100).IsRequired();
+        builder.Property(p => p.Password).HasMaxLength(100).IsRequired();
+        builder.Property(p => p.Salt).HasMaxLength(100).IsRequired();
+        builder.Property(p => p.CreatedAt).ValueGeneratedOnAdd();
+        builder.Property(p => p.UpdatedAt).ValueGeneratedOnAddOrUpdate();
     }
 
     public static void Map(this EntityTypeBuilder<UserClaim> builder)
@@ -20,6 +22,10 @@ internal static class EntitiesMapping
         builder.ToTable("UserClaim");
         builder.Property(p => p.Type).HasMaxLength(100).IsRequired();
         builder.Property(p => p.Value).HasMaxLength(100).IsRequired();
-        builder.HasOne(p => p.User).WithMany(p =>p.Claims).HasForeignKey(p => p.UserId);
+        builder.Property(p => p.CreatedAt).ValueGeneratedOnAdd();
+        builder.HasOne(p => p.User)
+            .WithMany(p =>p.Claims)
+            .HasForeignKey(p => p.UserId)
+            .OnDelete(DeleteBehavior.ClientCascade);
     }
 }

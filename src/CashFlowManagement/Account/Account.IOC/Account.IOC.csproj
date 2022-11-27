@@ -16,11 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Account.Security\Account.Security.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Account.Domain\Account.Domain.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Account.Persistence\Account.Persistence.csproj" />
   </ItemGroup>
 </Project>

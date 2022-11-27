@@ -22,7 +22,7 @@ public class UserService : IUserService
         var existingUser = await _repository.GetByLogin(user.Login);
         if (existingUser is not null)
         {
-            throw new DomainException("Login is aready in use.");
+            throw new LoginUnavailable();
         }
 
         FillWithNewCredential(user);
