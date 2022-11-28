@@ -35,6 +35,11 @@ run()
     run_cmd "dotnet run --project $cmfProject/$1/$1.$2"
 }
 
+build_all()
+{
+    run_cmd "dotnet build $cmfProject"
+}
+
 run_cmd()
 {
     echo "CMD: $1"

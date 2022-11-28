@@ -1,7 +1,6 @@
-using System.ComponentModel.DataAnnotations;
 using Account.Domain.Model;
 
-namespace Account.Api.Requests;
+namespace Account.Api.Request;
 
 public class CreateUserClaimRequest
 {

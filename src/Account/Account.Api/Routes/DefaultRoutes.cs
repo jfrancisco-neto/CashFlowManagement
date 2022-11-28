@@ -1,7 +1,7 @@
 using Account.Domain.Service;
 using Account.Security.Service;
 using Microsoft.AspNetCore.Mvc;
-using Account.Api.Requests;
+using Account.Api.Request;
 using Account.Api.Response;
 using Account.Security.Model;
 using Shared.Api.Response;

@@ -1,6 +1,6 @@
 using Account.Domain.Model;
 
-namespace Account.Api.Requests;
+namespace Account.Api.Request;
 
 public class CreateUserRequest
 {

@@ -1,4 +1,4 @@
-using Account.Api.Requests;
+using Account.Api.Request;
 using FluentValidation;
 
 namespace Account.Api.Validators;

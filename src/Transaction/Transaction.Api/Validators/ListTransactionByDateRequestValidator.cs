@@ -10,5 +10,6 @@ public class ListTransactionByDateRequestValidator : AbstractValidator<ListTrans
         RuleFor(p => p.Begin).NotNull();
         RuleFor(p => p.End).NotNull();
         RuleFor(p => p.Offset).GreaterThan(-1);
+        RuleFor(p => p.End).GreaterThanOrEqualTo(p => p.Begin);
     }
 }
