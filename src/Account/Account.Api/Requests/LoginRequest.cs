@@ -1,4 +1,4 @@
-namespace Account.Requests;
+namespace Account.Api.Requests;
 
 public class LoginRequest
 {

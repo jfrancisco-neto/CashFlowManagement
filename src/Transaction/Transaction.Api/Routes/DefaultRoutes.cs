@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
 using Shared.Api.Extensions;
 using Transaction.Api.Request;
 using Transaction.Api.Response;
@@ -18,8 +18,15 @@ public static class DefaultRoutes
     private static async Task<IResult> CreateTransaction(
         HttpContext httpContext,
         ITransactionService transactionService,
+        IValidator<CreateTransactionRequest> validator,
         CreateTransactionRequest createTransactionRequest)
     {
+        var result = validator.Validate(createTransactionRequest);
+        if (!result.IsValid)
+        {
+            return Results.UnprocessableEntity(result.ToErrorResponse());
+        }
+
         var transaction = new TransactionEntry
         {
             Amount = createTransactionRequest.Amount.Value,
@@ -34,9 +41,19 @@ public static class DefaultRoutes
 
     private static async Task<IResult> ListTransactions(
         ITransactionService transactionService,
+        IValidator<ListTransactionByDateRequest> validator,
         [AsParameters] ListTransactionByDateRequest query)
     {
-        var transactions = await transactionService.List(query.Begin.Value, query.End.Value, query.Offset.Value);
+        var result = validator.Validate(query);
+        if (!result.IsValid)
+        {
+            return Results.UnprocessableEntity(result.ToErrorResponse());
+        }
+
+        var transactions = await transactionService.List(
+            query.Begin.Value,
+            query.End.Value,
+            query.Offset ?? 0);
 
         return Results.Ok(new TransactionCollectionResponse(transactions));
     }

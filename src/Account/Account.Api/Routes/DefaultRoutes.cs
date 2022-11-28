@@ -1,11 +1,12 @@
 using Account.Domain.Service;
-using Account.Requests;
 using Account.Security.Service;
 using Microsoft.AspNetCore.Mvc;
 using Account.Api.Requests;
 using Account.Api.Response;
 using Account.Security.Model;
 using Shared.Api.Response;
+using FluentValidation;
+using Shared.Api.Extensions;
 
 namespace Account.Routes;
 
@@ -20,11 +21,18 @@ public static class DefaultRoutes
     }
 
     public static async Task<IResult> CreateUser(
-        IIdHasher hasher,
         HttpRequest httpRequest,
+        IIdHasher hasher,
         IUserService userService,
+        IValidator<CreateUserRequest> validator,
         [FromBody] CreateUserRequest request)
     {
+        var result = validator.Validate(request);
+        if (!result.IsValid)
+        {
+            return Results.UnprocessableEntity(result.ToErrorResponse());
+        }
+
         var user = request.ToDomainUser();
 
         await userService.Add(user);
@@ -71,8 +79,15 @@ public static class DefaultRoutes
         IIdHasher hasher,
         IUserService userService,
         ITokenGenerator jwtService,
+        IValidator<LoginRequest> validator,
         [FromBody] LoginRequest login)
     {
+        var result = validator.Validate(login);
+        if (!result.IsValid)
+        {
+            return Results.UnprocessableEntity(result.ToErrorResponse());
+        }
+
         var user = await userService.Login(login.Login, login.Password);
 
         if (user is null)
