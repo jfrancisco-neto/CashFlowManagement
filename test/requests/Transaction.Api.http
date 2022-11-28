@@ -1,7 +1,5 @@
-@token=""
-
 ###
-# @name loginAdmin
+# @name login
 post http://localhost:5000/auth
 Content-Type: application/json
 
@@ -12,14 +10,14 @@ Content-Type: application/json
 
 ###
 # get user
-get http://localhost:5000/entry?begin=2022-01-01&end=2022-01-02&offset=0
-Authorization: Bearer {{token}}
+get http://localhost:5001/entry?begin=2022-01-01&end=2022-01-02&offset=0
+Authorization: Bearer {{login.response.body.$.token}}
 
 ###
 # create user
-post http://localhost:5000/entry
+post http://localhost:5001/entry
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.$.token}}
 
 {
 }

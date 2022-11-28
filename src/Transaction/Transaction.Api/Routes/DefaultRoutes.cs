@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Shared.Api.Extensions;
 using Transaction.Api.Request;
 using Transaction.Api.Response;
 using Transaction.Domain.Model;
@@ -10,8 +11,8 @@ public static class DefaultRoutes
 {
     public static void MapRoutes(this WebApplication app)
     {
-        app.MapPost("entry", CreateTransaction);
-        app.MapGet("entry", ListTransactions);
+        app.MapPost("entry", CreateTransaction).RequireAuthorization("CreateTransaction");
+        app.MapGet("entry", ListTransactions).RequireAuthorization("ListTransactionPolicy");
     }
 
     private static async Task<IResult> CreateTransaction(
@@ -23,7 +24,7 @@ public static class DefaultRoutes
         {
             Amount = createTransactionRequest.Amount.Value,
             Description = createTransactionRequest.Description,
-            CreatedBy = httpContext.User.Claims.FirstOrDefault(x => x.Type == "Id").Value
+            CreatedBy = httpContext.GetUserId()
         };
 
         await transactionService.Create(transaction);
@@ -32,9 +33,8 @@ public static class DefaultRoutes
     }
 
     private static async Task<IResult> ListTransactions(
-        HttpContext httpContext,
         ITransactionService transactionService,
-        [FromQuery] ListTransactionByDateRequest query)
+        [AsParameters] ListTransactionByDateRequest query)
     {
         var transactions = await transactionService.List(query.Begin.Value, query.End.Value, query.Offset.Value);
 

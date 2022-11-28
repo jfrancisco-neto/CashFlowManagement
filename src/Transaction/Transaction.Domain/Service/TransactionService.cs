@@ -20,6 +20,6 @@ public class TransactionService : ITransactionService
 
     public async Task<EntryCollection<TransactionEntry>> List(DateTime begin, DateTime end, int offset)
     {
-        return await _repository.ListBetween(begin, end, offset, 100);
+        return await _repository.ListBetween(begin.ToUniversalTime(), end.ToUniversalTime(), offset, 100);
     }
 }

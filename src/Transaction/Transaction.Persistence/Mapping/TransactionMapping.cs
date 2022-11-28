@@ -10,5 +10,6 @@ public static class TransactionMapping
     {
         builder.ToTable("Transaction");
         builder.Property(p => p.Description).HasMaxLength(100).IsRequired();
+        builder.Property(p => p.CreatedBy).HasMaxLength(100).IsRequired();
     }
 }

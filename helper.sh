@@ -23,7 +23,7 @@ remove_migration()
     set -o allexport
     source .env
     set +o allexport
-    run_cmd "dotnet ef migrations rm $2 --project $projectPath/$1.Persistence --startup-project $projectPath/$1.Api"
+    run_cmd "dotnet ef migrations remove $2 --project $projectPath/$1.Persistence --startup-project $projectPath/$1.Api"
 }
 
 run()

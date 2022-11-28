@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Account.Domain.Exceptions;
 using Account.Domain.Model;
 using Account.Domain.Service;

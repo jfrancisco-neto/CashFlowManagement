@@ -14,14 +14,13 @@ post http://localhost:5000/auth
 Content-Type: application/json
 
 {
-    "login": "user2",
+    "login": "user1",
     "password": "1234"
 }
 
-
 ###
 # get user
-get http://localhost:5000/user/iz5
+get http://localhost:5000/user/iel
 Authorization: Bearer {{loginAdmin.response.body.$.token}}
 
 ###
@@ -35,9 +34,7 @@ Authorization: Bearer {{loginAdmin.response.body.$.token}}
     "login": "user1",
     "password": "1234",
     "claims": [
-        {
-            "type": "Permission",
-            "value": "Nothing"
-        }
+        { "type": "Permission", "value": "CreateTransaction" },
+        { "type": "Permission", "value": "ListTransaction" }
     ]
 }

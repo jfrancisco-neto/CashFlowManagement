@@ -14,8 +14,8 @@ public static class DefaultRoutes
     public static void MapRoutes(this WebApplication app)
     {
         app.MapPost("user", DefaultRoutes.CreateUser).RequireAuthorization("CreateUserPolicy");
-        app.MapGet("user/{id}", DefaultRoutes.GetUser);
-        app.MapGet("user", DefaultRoutes.ListUsers);
+        app.MapGet("user/{id}", DefaultRoutes.GetUser).RequireAuthorization("InspectUserPolicy");
+        app.MapGet("user", DefaultRoutes.ListUsers).RequireAuthorization("InspectUserPolicy");
         app.MapPost("auth", DefaultRoutes.Login).AllowAnonymous();
     }
 
