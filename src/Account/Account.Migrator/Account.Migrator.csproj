@@ -17,6 +17,7 @@
     <ProjectReference Include="..\Account.Domain\Account.Domain.csproj" />
     <ProjectReference Include="..\Account.Persistence\Account.Persistence.csproj" />
     <ProjectReference Include="..\Account.IOC\Account.IOC.csproj" />
+    <ProjectReference Include="..\..\Shared\Shared.Migrator\Shared.Migrator.csproj" />
   </ItemGroup>
 
 </Project>

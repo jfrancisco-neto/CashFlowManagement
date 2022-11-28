@@ -10,11 +10,15 @@ public abstract class Migrator<D> where D : DbContext
     protected virtual void OnConfigureServices(HostBuilderContext builder, IServiceCollection services)
     { }
 
-    protected virtual void OnBeforeMigration(IHost host, DbContext dbcontext)
-    { }
+    protected virtual Task OnBeforeMigration(IHost host, DbContext dbcontext)
+    {
+        return Task.CompletedTask;
+    }
 
-    protected virtual void OnAfterMigration(IHost host, DbContext dbcontext)
-    { }
+    protected virtual Task OnAfterMigration(IHost host, DbContext dbcontext)
+    {
+        return Task.CompletedTask;
+    }
 
     public async Task Migrate()
     {
@@ -26,10 +30,10 @@ public abstract class Migrator<D> where D : DbContext
         using var scope = host.Services.CreateScope();
         var dbcontext = scope.ServiceProvider.GetRequiredService<D>();
 
-        OnBeforeMigration(host, dbcontext);
+        await OnBeforeMigration(host, dbcontext);
 
         await dbcontext.Database.MigrateAsync();
 
-        OnAfterMigration(host, dbcontext);
+        await OnAfterMigration(host, dbcontext);
     }
 }

@@ -1,0 +1,25 @@
+@token=""
+
+###
+# @name loginAdmin
+post http://localhost:5000/auth
+Content-Type: application/json
+
+{
+    "login": "user1",
+    "password": "1234"
+}
+
+###
+# get user
+get http://localhost:5000/entry?begin=2022-01-01&end=2022-01-02&offset=0
+Authorization: Bearer {{token}}
+
+###
+# create user
+post http://localhost:5000/entry
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+}
