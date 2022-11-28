@@ -20,7 +20,7 @@ Content-Type: application/json
 
 ###
 # get user
-get http://localhost:5000/user/iel
+get http://localhost:5000/user/i3x
 Authorization: Bearer {{loginAdmin.response.body.$.token}}
 
 ###

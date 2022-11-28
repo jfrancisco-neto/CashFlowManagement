@@ -12,7 +12,7 @@ public static class FluentvalidationExtensions
             Errors = result.Errors
                 .Select(e => new ErrorResponse
                 {
-                    Code = e.ErrorCode,
+                    Code = e.PropertyName,
                     Description = e.ErrorMessage
                 })
                 .ToList()

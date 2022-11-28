@@ -11,7 +11,7 @@ public static class DefaultRoutes
 {
     public static void MapRoutes(this WebApplication app)
     {
-        app.MapPost("entry", CreateTransaction).RequireAuthorization("CreateTransaction");
+        app.MapPost("entry", CreateTransaction).RequireAuthorization("CreateTransactionPolicy");
         app.MapGet("entry", ListTransactions).RequireAuthorization("ListTransactionPolicy");
     }
 

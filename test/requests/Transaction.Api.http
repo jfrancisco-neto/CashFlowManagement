@@ -10,7 +10,7 @@ Content-Type: application/json
 
 ###
 # get user
-get http://localhost:5001/entry?begin=2022-01-01&end=2022-01-02&offset=0
+get http://localhost:5001/entry?begin=2022-01-01&end=2022-11-29Z&offset=0
 Authorization: Bearer {{login.response.body.$.token}}
 
 ###
@@ -20,4 +20,6 @@ Content-Type: application/json
 Authorization: Bearer {{login.response.body.$.token}}
 
 {
+    "amount": 100,
+    "description": "Something"
 }
