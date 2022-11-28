@@ -1,3 +1,5 @@
+using Shared.Entities.Model;
+
 namespace Shared.Api.Response;
 
 public class ErrorCollectionResponse

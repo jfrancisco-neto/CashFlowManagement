@@ -1,3 +1,4 @@
+using Shared.Entities.Model;
 using Transaction.Domain.Model;
 
 namespace Transaction.Domain.Service;
@@ -5,5 +6,5 @@ namespace Transaction.Domain.Service;
 public interface ITransactionService
 {
     Task Create(TransactionEntry transaction);
-    Task<TransactionEntryCollection> List(int offset);
+    Task<EntryCollection<TransactionEntry>> List(DateTime begin, DateTime end, int offset);
 }

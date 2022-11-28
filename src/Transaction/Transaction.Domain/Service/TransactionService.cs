@@ -1,3 +1,4 @@
+using Shared.Entities.Model;
 using Transaction.Domain.Model;
 using Transaction.Domain.Repository;
 
@@ -17,12 +18,8 @@ public class TransactionService : ITransactionService
         await _repository.Add(transaction);
     }
 
-    public async Task<TransactionEntryCollection> List(int offset)
+    public async Task<EntryCollection<TransactionEntry>> List(DateTime begin, DateTime end, int offset)
     {
-        return new TransactionEntryCollection
-        {
-            Total = await _repository.Count(),
-            Entries = await _repository.List(offset, 100)
-        };
+        return await _repository.ListBetween(begin, end, offset, 100);
     }
 }

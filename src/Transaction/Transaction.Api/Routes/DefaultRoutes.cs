@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Transaction.Api.Request;
 using Transaction.Api.Response;
 using Transaction.Domain.Model;
@@ -9,7 +10,8 @@ public static class DefaultRoutes
 {
     public static void MapRoutes(this WebApplication app)
     {
-        app.MapPost("transaction", DefaultRoutes.CreateTransaction);
+        app.MapPost("entry", CreateTransaction);
+        app.MapGet("entry", ListTransactions);
     }
 
     private static async Task<IResult> CreateTransaction(
@@ -19,7 +21,7 @@ public static class DefaultRoutes
     {
         var transaction = new TransactionEntry
         {
-            Amount = createTransactionRequest.Amount,
+            Amount = createTransactionRequest.Amount.Value,
             Description = createTransactionRequest.Description,
             CreatedBy = httpContext.User.Claims.FirstOrDefault(x => x.Type == "Id").Value
         };
@@ -27,5 +29,15 @@ public static class DefaultRoutes
         await transactionService.Create(transaction);
 
         return Results.Ok(new TransactionResponse(transaction));
+    }
+
+    private static async Task<IResult> ListTransactions(
+        HttpContext httpContext,
+        ITransactionService transactionService,
+        [FromQuery] ListTransactionByDateRequest query)
+    {
+        var transactions = await transactionService.List(query.Begin.Value, query.End.Value, query.Offset.Value);
+
+        return Results.Ok(new TransactionCollectionResponse(transactions));
     }
 }
