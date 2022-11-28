@@ -17,5 +17,5 @@ public class TransactionResponse
     public string Description { get; set; }
     public decimal Amount { get; set; }
     public DateTime CreatedAt { get; set; }
-    public long CreatedBy { get; set; }
+    public string CreatedBy { get; set; }
 }

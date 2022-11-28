@@ -49,6 +49,7 @@ public static class ServiceCollectionExtensions
 
                 options.DefaultPolicy = new AspnetCoreAuthorization.AuthorizationPolicyBuilder()
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireClaim("Id")
                     .RequireAuthenticatedUser()
                     .Build();
             });
@@ -72,6 +73,7 @@ public static class ServiceCollectionExtensions
                     ValidateAudience =  true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
+                    ValidAlgorithms = new []{ SecurityAlgorithms.HmacSha512 },
                     ValidAudience = authOptions.Audience,
                     ValidIssuer = authOptions.Issuer,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(authOptions.Key))

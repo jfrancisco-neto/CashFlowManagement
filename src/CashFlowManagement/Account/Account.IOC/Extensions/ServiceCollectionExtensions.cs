@@ -47,7 +47,7 @@ public static class ServiceCollectionExtensions
         => services
             .AddTransient<IUserRepository, UserRepository>()
             .AddDbContextPool<PersistenceContext>(
-                builder => builder.UseNpgsql(configuration.GetConnectionString("Postgres")));
+                builder => builder.UseNpgsql(configuration.GetConnectionString("Account")));
 
     public static IServiceCollection AddDomain(
         this IServiceCollection services,

@@ -1,10 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyName>Shared.Migrator</AssemblyName>
-    <RootNamespace>Shared.Migrator</RootNamespace>
+    <AssemblyName>Transaction.Migrator</AssemblyName>
+    <RootNamespace>Transaction.Migrator</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+    <ProjectReference Include="../../Shared/Shared.Migrator/Shared.Migrator.csproj" />
+    <ProjectReference Include="../Transaction.Persistence/Transaction.Persistence.csproj" />
+    <ProjectReference Include="../Transaction.IOC/Transaction.IOC.csproj" />
   </ItemGroup>
 
 </Project>

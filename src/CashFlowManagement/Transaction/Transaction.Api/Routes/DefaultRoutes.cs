@@ -13,6 +13,7 @@ public static class DefaultRoutes
     }
 
     private static async Task<IResult> CreateTransaction(
+        HttpContext httpContext,
         ITransactionService transactionService,
         CreateTransactionRequest createTransactionRequest)
     {
@@ -20,7 +21,7 @@ public static class DefaultRoutes
         {
             Amount = createTransactionRequest.Amount,
             Description = createTransactionRequest.Description,
-            CreatedBy = 666
+            CreatedBy = httpContext.User.Claims.FirstOrDefault(x => x.Type == "Id").Value
         };
 
         await transactionService.Create(transaction);

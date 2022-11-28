@@ -29,13 +29,13 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    private static IServiceCollection AddPersistence(
+    public static IServiceCollection AddPersistence(
         this IServiceCollection services,
         IConfiguration configuration)
         => services
             .AddTransient<ITransactionRepository, TransactionRepository>()
             .AddDbContextPool<PersistenceContext>(builder =>
-                builder.UseNpgsql(configuration.GetConnectionString("Postgres")));
+                builder.UseNpgsql(configuration.GetConnectionString("Transaction")));
 
     private static IServiceCollection AddDomain(this IServiceCollection services)
         => services .AddTransient<ITransactionService, TransactionService>();

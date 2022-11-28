@@ -6,7 +6,7 @@ public class TransactionEntry : IEntity
 {
     public long Id { get; set; }
     public decimal Amount { get; set; }
-    public long CreatedBy { get; set;}
+    public string CreatedBy { get; set;}
     public DateTime CreatedAt { get; set; }
     public string Description { get; set; }
 }

@@ -19,9 +19,18 @@ public class TokenGenerator : ITokenGenerator
     public Token GenerateToken(TokenCredential credential)
     {
         var key = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(_options.Key));
-        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        var claims = credential.Claims?.Select(c => new Claim(c.Item1, c.Item2));
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
         var expirationDate = DateTime.UtcNow.Add(_options.TokenExpirationTime);
+
+        var claims = new List<Claim>
+        {
+            new Claim("Id", credential.Id)
+        };
+
+        if (!credential.Claims.IsNullOrEmpty())
+        {
+            claims.AddRange(credential.Claims?.Select(c => new Claim(c.Item1, c.Item2)));
+        }
 
         var token = new JwtSecurityToken(
             issuer: _options.Issuer,
