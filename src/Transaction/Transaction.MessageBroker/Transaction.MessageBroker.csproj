@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>Transaction.MessageBroker</AssemblyName>
+    <RootNamespace>Transaction.MessageBroker</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit.Kafka" Version="8.0.8" />
+    <PackageReference Include="MassTransit" Version="8.0.8" />
+    <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Transaction.Domain/Transaction.Domain.csproj" />
+    <ProjectReference Include="../../Shared/Shared.Contract/Shared.Contract.csproj" />
+  </ItemGroup>
+
+</Project>

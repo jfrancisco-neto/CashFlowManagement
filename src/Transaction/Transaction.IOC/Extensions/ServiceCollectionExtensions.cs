@@ -15,8 +15,9 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
         => services
+            .AddDomain()
             .AddPersistence(configuration)
-            .AddDomain();
+            .AddEmitter(configuration);
 
     private static IServiceCollection MapOptions<T>(
         this IServiceCollection services,

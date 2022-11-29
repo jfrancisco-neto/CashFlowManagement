@@ -13,11 +13,16 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.0" />
+    <PackageReference Include="MassTransit.Kafka" Version="8.0.8" />
+    <PackageReference Include="MassTransit" Version="8.0.8" />
+    <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.3.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Balance.Domain\Balance.Domain.csproj" />
     <ProjectReference Include="..\Balance.Persistence\Balance.Persistence.csproj" />
+    <ProjectReference Include="..\Balance.MessageBroker\Balance.MessageBroker.csproj" />
+    <ProjectReference Include="..\..\Shared\Shared.Contract\Shared.Contract.csproj" />
   </ItemGroup>
 
 </Project>

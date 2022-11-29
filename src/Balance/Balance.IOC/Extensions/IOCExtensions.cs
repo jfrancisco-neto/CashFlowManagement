@@ -5,6 +5,7 @@ using Balance.Persistence.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Transaction.IOC.Extensions;
 
 namespace Balance.IOC.Extensions;
 
@@ -15,7 +16,8 @@ public static class IOCExtensions
         IConfiguration configuration)
         => services
             .AddDomain()
-            .AddPersistence(configuration);
+            .AddPersistence(configuration)
+            .AddEventConsumer(configuration);
 
     public static IServiceCollection AddDomain(
         this IServiceCollection services)

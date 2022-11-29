@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyName>Account.Api</AssemblyName>
-    <RootNamespace>Account.Api</RootNamespace>
+    <AssemblyName>Balance.Api</AssemblyName>
+    <RootNamespace>Balance.Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

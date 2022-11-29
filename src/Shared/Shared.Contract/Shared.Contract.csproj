@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyName>Shared.Validation</AssemblyName>
-    <RootNamespace>Shared.Validation</RootNamespace>
+    <AssemblyName>Shared.Contract</AssemblyName>
+    <RootNamespace>Shared.Contract</RootNamespace>
   </PropertyGroup>
 
 </Project>

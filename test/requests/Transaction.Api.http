@@ -20,6 +20,6 @@ Content-Type: application/json
 Authorization: Bearer {{login.response.body.$.token}}
 
 {
-    "amount": 100,
+    "amount": 1,
     "description": "Something"
 }
