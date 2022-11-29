@@ -29,7 +29,10 @@ public static class EventEmitterIOCExtensions
                     {
                         k.Host(options.Host);
 
-                        k.TopicEndpoint<TransactionCreatedMessage>(options.TopicName, "fsfsd", e => e.CreateIfMissing());
+                        k.TopicEndpoint<TransactionCreatedMessage>(
+                            options.TopicName,
+                            options.TopicName,
+                            e => e.CreateIfMissing());
                     });
                 });
             });
