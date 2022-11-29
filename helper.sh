@@ -6,13 +6,17 @@ start_compose()
     run_cmd "docker compose -f $rootFolder/deployment/docker/compose/compose.yaml up"
 }
 
-# account commands
+load_envs()
+{
+    set -o allexport
+    source .env
+    set +o allexport
+}
 
 create_migration()
 {
     local projectPath=$cmfProject/$1
     echo "Creating migration for $projectPath"
-
     run_cmd "dotnet ef migrations add $2 --project $projectPath/$1.Persistence --startup-project $projectPath/$1.Api"
 }
 
@@ -20,18 +24,14 @@ remove_migration()
 {
     local projectPath=$cmfProject/$1
     echo "Creating migration for $projectPath"
-    set -o allexport
-    source .env
-    set +o allexport
+    load_envs
     run_cmd "dotnet ef migrations remove $2 --project $projectPath/$1.Persistence --startup-project $projectPath/$1.Api"
 }
 
 run()
 {
     export ASPNETCORE_URLS="http://localhost:$3"
-    set -o allexport
-    source .env
-    set +o allexport
+    load_envs
     run_cmd "dotnet run --project $cmfProject/$1/$1.$2"
 }
 
@@ -40,10 +40,25 @@ build_all()
     run_cmd "dotnet build $cmfProject"
 }
 
+update_solution()
+{
+    run_cmd "dotnet sln $cmfProject add $cmfProject/*/*/*.csproj"
+}
+
 run_cmd()
 {
     echo "CMD: $1"
     $1
+}
+
+help()
+{
+    echo "Available commands"
+    echo ""
+    echo "start_compose -> Start the docker compose for the infra (postgres, adminer)."
+    echo "create_migration {project name} {migration name} -> Create migration of a specific project."
+    echo "remove_migration {project name} -> Remove the last migration."
+    echo "run {project name} {app} {port:optional} -> Run the app from specified project."
 }
 
 $@

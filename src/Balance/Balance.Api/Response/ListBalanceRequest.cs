@@ -1,8 +1,15 @@
+using Balance.Domain.Model;
+
 namespace Balance.Api.Response;
 
-public class BalanceResponse
+public class BalanceEntryResponse
 {
-    public DateTime From { get; set; }
-    public DateTime To { get; set; }
+    public BalanceEntryResponse(BalanceEntry entry)
+    {
+        Date = entry.Date;
+        TotalAmount = entry.TotalAmount;
+    }
+
+    public DateOnly Date { get; set; }
     public decimal TotalAmount { get; set; }
 }

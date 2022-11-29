@@ -4,11 +4,11 @@ using Shared.Entities.Repository;
 
 namespace Shared.Persistence.Repository;
 
-public abstract class Repository<T, D> : IEntityRepository<T>
+public abstract class EntityRepository<T, D> : IEntityRepository<T>
     where T : class, IEntity
     where D : DbContext
 {
-    protected Repository(D dbContext)
+    protected EntityRepository(D dbContext)
     {
         DbContext = dbContext;
     }

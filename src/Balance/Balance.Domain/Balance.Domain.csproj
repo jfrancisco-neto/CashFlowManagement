@@ -3,7 +3,12 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+        <AssemblyName>Balance.Domain</AssemblyName>
+    <RootNamespace>Balance.Domain</RootNamespace>
   </PropertyGroup>
+
+    <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Shared.Entities\Shared.Entities.csproj" />
+  </ItemGroup>
 
 </Project>
