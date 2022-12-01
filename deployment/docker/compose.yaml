@@ -1,0 +1,141 @@
+services:
+  #---- Apps ----#
+
+  # Account.Migrator
+  account-migrator:
+    build:
+      context: ../../
+      dockerfile: deployment/docker/Dockerfile
+      args:
+        ProjectName: Account.Migrator
+    env_file:
+      - ../../.env
+      - ../../account.env
+    restart: on-failure
+    depends_on:
+      - postgres
+
+  # Account.Api
+  account-api:
+    build:
+      context: ../../
+      dockerfile: deployment/docker/Dockerfile
+      args:
+        ProjectName: Account.Api
+    env_file:
+      - ../../.env
+      - ../../account.env
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - "5000:80"
+  
+  # Transaction.Migrator
+  transaction-migrator:
+    build:
+      context: ../../
+      dockerfile: deployment/docker/Dockerfile
+      args:
+        ProjectName: Transaction.Migrator
+    env_file:
+      - ../../.env
+      - ../../transaction.env
+    restart: on-failure
+    depends_on:
+      - postgres
+
+  # Transaction.Api
+  transaction-api:
+    build:
+      context: ../../
+      dockerfile: deployment/docker/Dockerfile
+      args:
+        ProjectName: Transaction.Api
+    env_file:
+      - ../../.env
+      - ../../transaction.env
+    restart: always
+    depends_on:
+      - postgres
+      - kafka
+    ports:
+      - "5001:80"
+
+  # Balance.Migrator
+  balance-migrator:
+    build:
+      context: ../../
+      dockerfile: deployment/docker/Dockerfile
+      args:
+        ProjectName: Balance.Migrator
+    env_file:
+      - ../../.env
+      - ../../balance.env
+    restart: on-failure
+    depends_on:
+      - postgres
+
+  # Balance.Api
+  balance-api:
+    build:
+      context: ../../
+      dockerfile: deployment/docker/Dockerfile
+      args:
+        ProjectName: Balance.Api
+    env_file:
+      - ../../.env
+      - ../../balance.env
+    restart: always
+    depends_on:
+      - postgres
+      - kafka
+    ports:
+      - "5002:80"
+
+  #---- infra ----#
+
+  # Postgres SQL
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+
+#   postgres-admin:
+#     image: adminer
+#     restart: always
+#     ports:
+#       - 8080:8080
+
+  # Zookeeper
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:3.8
+    ports:
+      - "2181:2181"
+    volumes:
+      - "zookeeper_data:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  # Apache Kafka
+  kafka:
+    image: docker.io/bitnami/kafka:3.3
+    ports:
+      - "9092:9092"
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+    depends_on:
+      - zookeeper
+
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local

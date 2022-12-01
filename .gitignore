@@ -1,5 +1,6 @@
 **/.local
 **/*/bin
 **/*/obj
+publish/
 .vscode/
 .env

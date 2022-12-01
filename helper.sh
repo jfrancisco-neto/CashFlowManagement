@@ -3,7 +3,12 @@ cmfProject=$rootFolder/src
 
 start_compose()
 {
-    run_cmd "docker compose -f $rootFolder/deployment/docker/compose/compose.yaml up"
+    run_cmd "docker compose -f $rootFolder/deployment/docker/compose.yaml up"
+}
+
+stop_compose()
+{
+    run_cmd "docker compose -f $rootFolder/deployment/docker/compose.yaml stop"
 }
 
 load_envs()
@@ -35,9 +40,36 @@ run()
     run_cmd "dotnet run --project $cmfProject/$1/$1.$2"
 }
 
+run_all()
+{
+    run Account Api 5000
+    run Transaction Api 5001
+    run Balance Api 5002
+}
+
 build_all()
 {
     run_cmd "dotnet build $cmfProject"
+}
+
+publish()
+{
+    if [ -z "$2" ]
+    then
+        run_cmd "dotnet publish $cmfProject/$1 -c Release -o $rootFolder/publish/$1"
+    else
+        run_cmd "dotnet publish $cmfProject/$1/$1.$2 -c Release -o $rootFolder/publish/$1.$2"
+    fi
+}
+
+publish_all()
+{
+    publish Account Api
+    publish Account Migrator
+    publish Balance Api
+    publish Balance Migrator
+    publish Transaction Api
+    publish Transaction Migrator
 }
 
 update_solution()
